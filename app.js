@@ -2,6 +2,9 @@ const buttons = document.querySelectorAll('button');
 let visor = document.querySelector('.visor');
 visor.style.cssText = 'text-align: right;';
 
+
+let historico = document.querySelector('.historico')
+
 let primeiroValor;
 let segundoValor;
 let opr;
@@ -76,7 +79,9 @@ window.addEventListener('keydown', (e) => {
 		case 13:
 			key = '=';
 			// console.log(key);
-			// visor.value += key;
+			visor.value = Function('"use strict";return (' + visor.value + ')')();
+			segundoValor = undefined;
+			opr = undefined;
 			break;
 	}
 });
@@ -85,17 +90,21 @@ buttons.forEach((button) => {
 	button.addEventListener('click', () => {
 		if (button.value == 'C') {
 			visor.value = '';
+			primeiroValor = segundoValor = opr = undefined;
 		} else if (button.classList.contains('operador')) {
-			if (opr == undefined) {
-				primeiroValor = Number(visor.value);
-				opr = button.value;
-			} else {
-				primeiroValor = Number(
-					visor.value.slice(0, visor.value.lastIndexOf(opr))
-				);
-				visor.value[visor.value.lastIndexOf(opr)] = button.value;
-				opr = button.value;
-			}
+			if (segundoValor == undefined) {
+				if (opr == undefined) {
+					primeiroValor = Number(visor.value);
+					opr = button.value;
+				} else if (opr != undefined) {
+					primeiroValor = Number(visor.value.slice(0, visor.value.lastIndexOf(opr)));
+					visor.value[visor.value.lastIndexOf(opr)] = button.value;
+					opr = button.value;
+				}
+			} if (primeiroValor && segundoValor && opr != undefined) {
+				visor.value = primeiroValor = calculo(primeiroValor,segundoValor,opr);
+				segundoValor = opr = undefined;
+			} 
 
 			visor.value = primeiroValor + opr;
 			console.log(visor.value, primeiroValor, opr);
@@ -103,14 +112,17 @@ buttons.forEach((button) => {
 			segundoValor = Number(visor.value.slice(visor.value.indexOf(opr) + 1));
 			console.log(segundoValor);
 
+			
 			if (primeiroValor && segundoValor != undefined) {
-				visor.value = primeiroValor = calculo(
-					primeiroValor,
-					segundoValor,
-					opr
-				);
-				segundoValor = undefined;
-				opr = undefined;
+				let resultado = calculo(primeiroValor,segundoValor,opr);
+
+				let divResultado = document.createElement('div')
+				divResultado.classList.add('resultado')
+
+				divResultado.textContent = visor.value + ' = ' + resultado
+				historico.insertAdjacentElement('afterend', divResultado)
+				visor.value = primeiroValor = resultado
+				segundoValor = opr = undefined;
 			} else {
 				visor.value = 'Operação inválida';
 			}

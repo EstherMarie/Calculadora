@@ -73,3 +73,25 @@
 .igual:hover {
 	background-color: #00b06f6c;
 }
+
+.area-historico {
+	width: 178px;
+	height: 207px;
+	padding: 1%;
+
+	display: flex;
+	flex-direction: column;
+	background-color: #4f4f4f;
+	color: white;
+	text-align: right;
+	border-radius: 3px 5px 5px 0;
+}
+
+.area-historico p {
+	text-align: left;
+}
+
+.resultado {
+	margin: 5px;
+	letter-spacing: 5px;
+}
