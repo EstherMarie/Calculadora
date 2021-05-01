@@ -23,8 +23,8 @@
 	flex-direction: column;
 	background-color: gray;
 
-	width: 178px;
-	height: 207px;
+	width: 198px;
+	height: 257px;
 	padding: 16.9px;
 	border-radius: 5px;
 	background-color: #353535;
@@ -45,8 +45,8 @@
 .teclas {
 	height: 80%;
 	display: grid;
+	grid-template-areas: 'c c b o' 'n n n o' 'n n n o' 'n n n o' 'z z p i';
 	grid-template-columns: repeat(4, 1fr);
-
 	border: 1px solid #6f6f6f;
 }
 
@@ -65,13 +65,36 @@
 	opacity: 20%;
 }
 
-.operador,
+.operador {
+	background-color: #404040;
+}
+
 .C {
 	background-color: #404040;
+	grid-area: c;
+}
+
+.backspace {
+	background-color: #404040;
+}
+
+.fa-backspace {
+	grid-area: b;
+	pointer-events: none;
+}
+
+.ponto {
+	/* background-color: #404040; */
+	grid-area: p;
+}
+
+.zero {
+	grid-area: z;
 }
 
 .igual {
 	background-color: #00b070;
+	grid-area: i;
 }
 
 .igual:hover {
@@ -79,9 +102,9 @@
 }
 
 .area-historico {
-	width: 178px;
-	height: 207px;
-	padding: 1%;
+	width: 198px;
+	height: 257px;
+	padding: 1.5%;
 
 	display: flex;
 	flex-direction: column;

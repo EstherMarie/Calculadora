@@ -101,7 +101,14 @@ buttons.forEach((button) => {
 	button.addEventListener('click', () => {
 		function calculaResultado() {
 			console.log(primeiroValor, opr, segundoValor);
-			let resultado = calculo(primeiroValor, segundoValor, opr);
+			let resultado = parseFloat(calculo(primeiroValor, segundoValor, opr));
+			if (Number.isInteger(resultado)) {
+				resultado = calculo(primeiroValor, segundoValor, opr);
+			} else {
+				resultado = parseFloat(
+					calculo(primeiroValor, segundoValor, opr)
+				).toFixed(1);
+			}
 
 			let divOperacao = document.createElement('div');
 			divOperacao.classList.add('operacao');
@@ -120,20 +127,29 @@ buttons.forEach((button) => {
 		if (button.value == 'C') {
 			visor.value = '';
 			primeiroValor = segundoValor = opr = undefined;
+		} else if (button.value == 'backspace') {
+			visor.value.slice(-1) == '+' ||
+			visor.value.slice(-1) == '-' ||
+			visor.value.slice(-1) == '/' ||
+			visor.value.slice(-1) == '*'
+				? (visor.value = visor.value)
+				: (visor.value = visor.value.slice(0, -1));
 		} else if (button.classList.contains('operador')) {
 			if (opr == undefined) {
 				primeiroValor = Number(visor.value);
 				opr = button.value;
 			} else if (opr != undefined) {
-				// se possui algo a direito do opr => calculo()
-				if (visor.value.slice(visor.value.lastIndexOf(opr))) {
+				// se possui algo a direita do opr => calculo()
+				if (visor.value.slice(visor.value.lastIndexOf(opr) + 1) != '') {
 					segundoValor = Number(visor.value.slice(visor.value.indexOf(opr) + 1));
 					calculaResultado();
 					opr = button.value;
 				}
 
 				// senão trocar opr antigo pelo opr digitado
-				else if (visor.value.slice(visor.value.lastIndexOf(opr)) == false) {
+				else if (
+					visor.value.slice(visor.value.lastIndexOf(opr) + 1) == false
+				) {
 					primeiroValor = Number(visor.value.slice(0, visor.value.lastIndexOf(opr)));
 					visor.value[visor.value.lastIndexOf(opr)] = button.value;
 					opr = button.value;
@@ -142,7 +158,6 @@ buttons.forEach((button) => {
 
 			visor.value = primeiroValor + opr;
 			console.log(visor.value, primeiroValor, opr);
-
 		} else if (button.value == '=') {
 			segundoValor = Number(visor.value.slice(visor.value.indexOf(opr) + 1));
 
