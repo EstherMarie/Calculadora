@@ -89,7 +89,7 @@ window.addEventListener('keydown', (e) => {
 			divResultado.textContent = r1;
 
 			divOperacao.insertAdjacentElement('beforeend', divResultado);
-			historico.insertAdjacentElement('afterend', divOperacao);
+			historico.insertAdjacentElement('beforeend', divOperacao);
 
 			visor.value = r1;
 			segundoValor = opr = undefined;
